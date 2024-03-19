@@ -11,7 +11,6 @@ void left_redirect(params_t *params, int *fd, int i)
 {
     *fd = open(params->token_list[i + 1], O_RDONLY);
     if (*fd == -1) {
-        perror("open");
         exit(EXIT_FAILURE);
     }
     dup2(*fd, STDIN_FILENO);
@@ -24,7 +23,6 @@ void right_redirect(params_t *params, int *fd, int i)
     *fd = open(params->token_list[i + 1], O_WRONLY | O_CREAT |
         O_TRUNC, S_IRUSR | S_IWUSR);
     if (*fd == -1) {
-        perror("open");
         exit(EXIT_FAILURE);
     }
     dup2(*fd, STDOUT_FILENO);
