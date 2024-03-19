@@ -36,10 +36,10 @@ void redirect(params_t *params)
     int fd;
 
     while (params->token_list[i] != NULL) {
-        if (strcmp(params->token_list[i], "<") == 0) {
+        if (my_strcmp(params->token_list[i], "<") == 0) {
             left_redirect(params, &fd, i);
         }
-        if (strcmp(params->token_list[i], ">") == 0) {
+        if (my_strcmp(params->token_list[i], ">") == 0) {
             right_redirect(params, &fd, i);
         }
         i++;
