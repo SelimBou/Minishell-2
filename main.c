@@ -94,7 +94,7 @@ char *which_path(char *command)
 static int verify_command(params_t *params, char **env)
 {
     pid_t pid;
-    char *path = params->token_list[0];
+    char *path = params->token_list[1];
     struct stat path_stat;
 
     if (check_built_in(params) == 0) {
@@ -165,10 +165,9 @@ int start_shell(char **env)
             my_printf("[$>%s]", current_dir);
         }
         read = getline(&line, &len, stdin);
-        if (read == -1) {
+        if (read == -1)
             return code_retour;
-        }
-        code_retour = args_to_token(line, env);
+        code_retour = read_and_tokenize(line, env);
     }
     return code_retour;
 }

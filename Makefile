@@ -20,6 +20,8 @@ SRC	=	main.c	\
 		is_alpha.c	\
 		is_alpha_num.c	\
 		check_malloc.c	\
+		my_strtok.c	\
+		token.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

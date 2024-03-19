@@ -25,6 +25,9 @@ typedef struct params {
     char *copy;
     char *token;
 } params_t;
+int args_to_token(char *line, char **env);
+int read_and_tokenize(char *line, char **env);
+char *my_strtok(char *str, int index, char *delim);
 int check_args_cd(params_t *params);
 int last_case_cd(params_t *params);
 int change_dir(char *dir);
