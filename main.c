@@ -94,7 +94,7 @@ char *which_path(char *command)
 static int verify_command(params_t *params, char **env)
 {
     pid_t pid;
-    char *path = params->token_list[1];
+    char *path = params->token_list[0];
     struct stat path_stat;
 
     if (check_built_in(params) == 0) {
