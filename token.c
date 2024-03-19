@@ -7,6 +7,27 @@
 
 #include "shell_two.h"
 
+int other_commands(params_t *params, char **env)
+{
+    pid_t pid;
+    char *path = params->token_list[0];
+    struct stat path_stat;
+
+    check_if_dir(path, &path_stat);
+    if (params->token_list[0][0] != '.')
+        path = which_path(params->token_list[0]);
+    else
+        path = params->token_list[0];
+    if (exe_command2(params, env) == 0)
+        return 0;
+    else {
+        pid = fork();
+        if (pid == 0)
+            redirect(params);
+        return exe_command(pid, params, env, path);
+    }
+}
+
 int read_and_tokenize(char *line, char **env)
 {
     int code_retour = 0;

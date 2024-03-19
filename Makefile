@@ -22,6 +22,7 @@ SRC	=	main.c	\
 		check_malloc.c	\
 		my_strtok.c	\
 		token.c	\
+		redirect.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

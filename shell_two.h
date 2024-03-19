@@ -25,6 +25,12 @@ typedef struct params {
     char *copy;
     char *token;
 } params_t;
+char *which_path(char *command);
+int exe_command(pid_t pid, params_t *params, char **env, char *path);
+int other_commands(params_t *params, char **env);
+void left_redirect(params_t *params, int *fd, int i);
+void right_redirect(params_t *params, int *fd, int i);
+void redirect(params_t *params);
 int args_to_token(char *line, char **env);
 int read_and_tokenize(char *line, char **env);
 char *my_strtok(char *str, int index, char *delim);

@@ -24,7 +24,7 @@ static int which_command(params_t *params, char **env)
     return 0;
 }
 
-static int exe_command(pid_t pid, params_t *params, char **env, char *path)
+int exe_command(pid_t pid, params_t *params, char **env, char *path)
 {
     int status = 0;
     int code_retour = 0;
@@ -93,24 +93,10 @@ char *which_path(char *command)
 
 static int verify_command(params_t *params, char **env)
 {
-    pid_t pid;
-    char *path = params->token_list[0];
-    struct stat path_stat;
-
     if (check_built_in(params) == 0) {
         return which_command(params, env);
     } else {
-        check_if_dir(path, &path_stat);
-        if (params->token_list[0][0] != '.')
-            path = which_path(params->token_list[0]);
-        else
-            path = params->token_list[0];
-        if (exe_command2(params, env) == 0)
-            return 0;
-        else {
-            pid = fork();
-            return exe_command(pid, params, env, path);
-        }
+        return other_commands(params, env);
     }
 }
 
@@ -151,7 +137,7 @@ int args_to_token(char *line, char **env)
     return verify_command(&params, env);
 }
 
-int start_shell(char **env)
+static int start_shell(char **env)
 {
     char *line = NULL;
     char current_dir[BUF_SIZE];
