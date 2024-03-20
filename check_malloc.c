@@ -13,6 +13,7 @@ int check_args_cd(params_t *params)
         my_printf("cd: Too many arguments.\n");
         return 1;
     }
+    return 0;
 }
 
 int last_case_cd(params_t *params)
