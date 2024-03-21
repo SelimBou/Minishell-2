@@ -14,7 +14,7 @@ int other_commands(params_t *params, char **env)
     struct stat path_stat;
 
     check_if_dir(path, &path_stat);
-    if (params->token_list[0][0] != '.')
+    if (params->token_list[0][0] != '.' && params->token_list[0][0] != '/')
         path = which_path(params->token_list[0]);
     else
         path = params->token_list[0];
