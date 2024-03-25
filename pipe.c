@@ -64,7 +64,6 @@ void parent_process(params_t *params, char **env, int i, int *fd)
         close(fd[1]);
         args_to_token2(params, params->pipe_off[i + 1], env);
         path = which_path(params->token_list[i]);
-        printf("path: %s\n", path);
         execve(path, params->token_list, env);
         exit(0);
     } else {
