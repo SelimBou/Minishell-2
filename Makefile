@@ -23,6 +23,8 @@ SRC	=	main.c	\
 		my_strtok.c	\
 		token.c	\
 		redirect.c	\
+		my_strrchr.c	\
+		pipe.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -31,7 +33,7 @@ NAME	= mysh
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
-	gcc $(OBJ) -o $(NAME)
+	gcc $(OBJ) -o $(NAME) -g3
 
 clean:
 	rm -f $(OBJ)

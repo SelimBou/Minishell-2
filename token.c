@@ -28,17 +28,79 @@ int other_commands(params_t *params, char **env)
     }
 }
 
+static int if_pipe_true(params_t *params, int i, int j, int *count_of_pipes)
+{
+    if (params->semicolons_off[i][j] == '|') {
+        (*count_of_pipes)++;
+    }
+    return 0;
+}
+
+int count_pipes(params_t *params)
+{
+    int count_of_pipes = 0;
+
+    for (int i = 0; params->semicolons_off[i] != NULL; i ++) {
+        for (int j = 0; params->semicolons_off[i][j] != '\0'; j ++) {
+            if_pipe_true(params, i, j, &count_of_pipes);
+        }
+    }
+    return count_of_pipes;
+}
+
+int search_for_pipe(params_t *params, char **env)
+{
+    int total_pipes = count_pipes(params);
+    int index = 0;
+    char *pipe_command;
+    int code_retour = 0;
+
+    params->pipe_off = malloc(sizeof(char *) * (total_pipes + 1));
+    for (int i = 0; params->semicolons_off[i] != NULL; i ++) {
+        pipe_command = strtok(my_strdup(params->semicolons_off[i]), "|");
+        while (pipe_command != NULL) {
+            params->pipe_off[index] = my_strdup(pipe_command);
+            index ++;
+            pipe_command = strtok(NULL, "|");
+        }
+        free(pipe_command);
+    }
+    params->pipe_off[index] = NULL;
+    execute_pipes(params, env);
+}
+
+int count_semicolons(char *line)
+{
+    int semicolons = 0;
+
+    for (int i = 0; line[i] != '\0'; i ++) {
+        if (line[i] == ';') {
+            semicolons ++;
+        }
+    }
+    return semicolons;
+}
+
 int read_and_tokenize(char *line, char **env)
 {
+    params_t params;
     int code_retour = 0;
     char *command;
     int index = 0;
+    int num_of_semicolons = count_semicolons(line);
 
+    params.semicolons_off = malloc(sizeof(char *) * num_of_semicolons);
     command = my_strtok(line, index, ";");
     while (command != NULL) {
-        code_retour = args_to_token(command, env);
+        if (my_strrchr(line, '|') == NULL)
+            code_retour = args_to_token(command, env);
+        params.semicolons_off[index] = my_strdup(command);
         index++;
         command = my_strtok(line, index, ";");
+    }
+    for (int i = 0; i < index; i ++) {
+        if (my_strrchr(params.semicolons_off[i], '|') != NULL)
+            search_for_pipe(&params, env);
     }
     return code_retour;
 }

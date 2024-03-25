@@ -30,10 +30,9 @@ int exe_command(pid_t pid, params_t *params, char **env, char *path)
     int code_retour = 0;
 
     if (pid == 0) {
-        if (execve(path, params->token_list, env) == -1) {
+        if (execve(path, params->token_list, env) == -1)
             my_printf("%s: Command not found.\n", params->token_list[0]);
             exit(1);
-        }
     } else {
         wait(&status);
         if (WIFEXITED(status)) {
@@ -153,7 +152,10 @@ static int start_shell(char **env)
         read = getline(&line, &len, stdin);
         if (read == -1)
             return code_retour;
-        code_retour = read_and_tokenize(line, env);
+        if (my_strrchr(line, ';') != NULL || my_strrchr(line, '|') != NULL) {
+            code_retour = read_and_tokenize(line, env);
+        } else
+            code_retour = args_to_token(line, env);
     }
     return code_retour;
 }

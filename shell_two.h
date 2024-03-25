@@ -21,11 +21,16 @@
 
 typedef struct params {
     char **token_list;
+    char **semicolons_off;
+    char **pipe_off;
     int number_token;
     char *new_value;
     char *copy;
     char *token;
 } params_t;
+int execute_pipes(params_t *params, char **env);
+int count_pipes(params_t *params);
+char *my_strrchr(const char *s, int c);
 char *which_path(char *command);
 int exe_command(pid_t pid, params_t *params, char **env, char *path);
 int other_commands(params_t *params, char **env);
