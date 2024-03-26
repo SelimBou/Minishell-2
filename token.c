@@ -92,7 +92,7 @@ int read_and_tokenize(char *line, char **env)
     params.semicolons_off = malloc(sizeof(char *) * num_of_semicolons);
     command = my_strtok(line, index, ";");
     while (command != NULL) {
-        if (my_strrchr(line, '|') == NULL)
+        if (my_strrchr(command, '|') == NULL)
             code_retour = args_to_token(command, env);
         params.semicolons_off[index] = my_strdup(command);
         index++;

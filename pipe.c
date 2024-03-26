@@ -43,48 +43,44 @@ int args_to_token2(params_t *params, char *line, char **env)
     return 0;
 }
 
-void child_process(params_t *params, char **env, int i, int *fd)
+int process_child(int i, char **env, params_t *params)
 {
     char *path;
 
-    dup2(fd[1], STDOUT_FILENO);
-    close(fd[0]);
+    dup2(params->prev_fd, STDIN_FILENO);
+    if (params->pipe_off[i + 1] != NULL) {
+        dup2(params->fd[1], STDOUT_FILENO);
+    }
+    close(params->fd[0]);
     args_to_token2(params, params->pipe_off[i], env);
-    path = which_path(params->token_list[i]);
+    path = which_path(params->token_list[0]);
     execve(path, params->token_list, env);
-    exit(0);
+    exit(1);
 }
 
-void parent_process(params_t *params, char **env, int i, int *fd)
+void handle_fork(pid_t pid, int i, params_t *params, char **env)
 {
-    char *path;
-
-    if (fork() == 0) {
-        dup2(fd[0], STDIN_FILENO);
-        close(fd[1]);
-        args_to_token2(params, params->pipe_off[i + 1], env);
-        path = which_path(params->token_list[i]);
-        execve(path, params->token_list, env);
-        exit(0);
+    if (pid == -1) {
+        perror("fork failed");
+        exit(1);
+    } else if (pid == 0) {
+        process_child(i, env, params);
     } else {
-        close(fd[1]);
-        close(fd[0]);
-        wait(0);
-        wait(0);
+        wait(NULL);
+        close(params->fd[1]);
+        params->prev_fd = params->fd[0];
     }
 }
 
 int execute_pipes(params_t *params, char **env)
 {
-    int fd[2];
+    pid_t pid;
 
+    params->prev_fd = 0;
     for (int i = 0; params->pipe_off[i] != NULL; i++) {
-        pipe(fd);
-        if (fork() == 0) {
-            child_process(params, env, i, fd);
-        } else {
-            parent_process(params, env, i, fd);
-        }
+        pipe(params->fd);
+        pid = fork();
+        handle_fork(pid, i, params, env);
     }
     return 0;
 }
