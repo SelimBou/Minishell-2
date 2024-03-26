@@ -27,10 +27,7 @@ typedef struct params {
     char *new_value;
     char *copy;
     char *token;
-    int fd[2];
-    int prev_fd;
 } params_t;
-int args_to_token2(params_t *params, char *line, char **env);
 int execute_pipes(params_t *params, char **env);
 int count_pipes(params_t *params);
 char *my_strrchr(const char *s, int c);
