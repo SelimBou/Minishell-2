@@ -27,6 +27,7 @@ typedef struct params {
     char *new_value;
     char *copy;
     char *token;
+    char *old_dir;
 } params_t;
 int execute_pipes(params_t *params, char **env);
 int count_pipes(params_t *params);
@@ -40,7 +41,7 @@ int read_and_tokenize(char *line, char **env);
 char *my_strtok(char *str, int index, char *delim);
 int check_args_cd(params_t *params);
 int last_case_cd(params_t *params);
-int change_dir(char *dir);
+int change_dir(char *dir, params_t *params);
 int check_if_dir(char *path, struct stat *path_stat);
 int exe_command2(params_t *params, char **env);
 char *my_getenv(const char *name);
