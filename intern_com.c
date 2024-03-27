@@ -7,20 +7,10 @@
 
 #include "shell_two.h"
 
-/*int change_dir(char *dir, char **env)
+int change_dir(char *dir)
 {
     if (chdir(dir) != 0)
         return 1;
-    return 0;
-}*/
-
-int change_dir(char *dir, params_t *params)
-{
-    char *current_dir = getcwd(NULL, 0);
-
-    if (chdir(dir) != 0)
-        return 1;
-    params->old_dir = current_dir;
     return 0;
 }
 
@@ -34,13 +24,13 @@ int cd_command(params_t *params)
     if ((params->number_token == 1 && my_strcmp(params->token_list[0], "cd")
         == 0) || (params->number_token == 2 &&
         my_strcmp(params->token_list[1], "--") == 0)) {
-        if (change_dir("/", params) != 0)
+        if (change_dir("/") != 0)
             return 1;
         return 0;
     }
     if (params->number_token == 2 &&
         my_strcmp(params->token_list[1], "-") == 0) {
-        if (change_dir(old_dir, params) != 0)
+        if (change_dir(old_dir) != 0)
             return 1;
         return 0;
     }

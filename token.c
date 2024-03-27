@@ -52,7 +52,7 @@ static int check_command(params_t *params, int i)
 {
     if (my_strcmp(params->semicolons_off[i], "|") == 0 ||
         my_strcmp(params->semicolons_off[i], " | ") == 0) {
-        printf("Invalid null command.\n");
+        my_printf("Invalid null command.\n");
         return 1;
     }
     return 0;
