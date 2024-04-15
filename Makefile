@@ -5,26 +5,26 @@
 ## Makefile
 ##
 
-SRC	=	main.c	\
-		my_putchar.c	\
-		my_putstr.c	\
-		my_printf.c	\
-		my_strlen.c	\
-		my_strdup.c	\
-		strcmp.c	\
-		intern_com.c	\
-		my_str_isalpha.c	\
-		strncmp.c	\
-		my_strcpy.c	\
-		my_strcat.c	\
-		is_alpha.c	\
-		is_alpha_num.c	\
-		check_malloc.c	\
-		my_strtok.c	\
-		token.c	\
-		redirect.c	\
-		my_strrchr.c	\
-		pipe.c	\
+SRC	=	src/main.c	\
+		src/my_putchar.c	\
+		src/my_putstr.c	\
+		src/my_printf.c	\
+		src/my_strlen.c	\
+		src/my_strdup.c	\
+		src/strcmp.c	\
+		src/intern_com.c	\
+		src/my_str_isalpha.c	\
+		src/strncmp.c	\
+		src/my_strcpy.c	\
+		src/my_strcat.c	\
+		src/is_alpha.c	\
+		src/is_alpha_num.c	\
+		src/check_malloc.c	\
+		src/my_strtok.c	\
+		src/token.c	\
+		src/redirect.c	\
+		src/my_strrchr.c	\
+		src/pipe.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
